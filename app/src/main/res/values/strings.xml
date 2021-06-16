@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Pharma Inc Android</string>
+    <string name="unknown">Unknown</string>
+    <string name="any">Any</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="preferNotToSay">Prefer Not To Say</string>
+    <string name="open_link">Open Link</string>
+    <string name="user_avatar">User Avatar</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_first_fragment">Hello First Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="rv_name">Name: %1$s</string>
+    <string name="dt_name">Name: %1$s</string>
+    <string name="dt_address">Address: %1$s</string>
+    <string name="dt_email">EMail: %1$s</string>
+</resources>
