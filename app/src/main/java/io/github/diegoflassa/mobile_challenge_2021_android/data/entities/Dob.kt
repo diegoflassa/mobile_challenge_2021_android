@@ -19,7 +19,7 @@ data class Dob(
     }
 
     fun getDateAsDateTime(): Date? {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
         return inputFormat.parse(date)
     }
 }

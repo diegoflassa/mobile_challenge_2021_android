@@ -6,35 +6,70 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import dagger.hilt.android.AndroidEntryPoint
 import io.github.diegoflassa.mobile_challenge_2021_android.R
 import io.github.diegoflassa.mobile_challenge_2021_android.adapters.AllPatientsAdapter
 import io.github.diegoflassa.mobile_challenge_2021_android.databinding.FragmentAllPatientsBinding
+import io.github.diegoflassa.mobile_challenge_2021_android.enums.Gender
+import io.github.diegoflassa.mobile_challenge_2021_android.enums.QueryFields
 import io.github.diegoflassa.mobile_challenge_2021_android.helper.viewLifecycle
+import io.github.diegoflassa.mobile_challenge_2021_android.interfaces.OnSearch
 import io.github.diegoflassa.mobile_challenge_2021_android.models.AllPatientsFragmentViewModel
+import io.github.diegoflassa.mobile_challenge_2021_android.ui.searchBar.SearchBarFragment
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
 import java.lang.ref.WeakReference
+import androidx.recyclerview.widget.RecyclerView
+
 
 /**
  * A simple [Fragment] subclass.
  * Use the [AllPatientsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+@DelicateCoroutinesApi
 @Suppress("unused")
-class AllPatientsFragment : Fragment() {
+@AndroidEntryPoint
+@Parcelize
+class AllPatientsFragment : Fragment(), OnSearch {
 
+    @IgnoredOnParcel
     private var binding: FragmentAllPatientsBinding by viewLifecycle()
-    private lateinit var viewModel: AllPatientsFragmentViewModel
-    private lateinit var adapter: WeakReference<AllPatientsAdapter>
 
+    @IgnoredOnParcel
+    private lateinit var viewModel: AllPatientsFragmentViewModel // by viewModels()
+
+    @IgnoredOnParcel
+    private var adapter: WeakReference<AllPatientsAdapter>? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState == null) {
+            val bundle = bundleOf(SearchBarFragment.key_on_search to this)
+            childFragmentManager.commit {
+                setReorderingAllowed(true)
+                add<SearchBarFragment>(R.id.fragment_search_bar_container, args = bundle)
+            }
+        }
+    }
+
+    @DelicateCoroutinesApi
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        viewModel = ViewModelProvider(this).get(AllPatientsFragmentViewModel::class.java)
         binding = FragmentAllPatientsBinding.inflate(inflater, container, false)
         val swipeContainer =
             binding.root.findViewById(R.id.swipeContainerAllPatients) as SwipeRefreshLayout
@@ -44,7 +79,22 @@ class AllPatientsFragment : Fragment() {
             Log.i(AllPatientsFragment.tag, "AllPatientsFragment.onRefreshListener")
         }
         initRecyclerView()
-        binding.recyclerview.layoutManager = LinearLayoutManager(activity)
+        val mLayoutManager = LinearLayoutManager(activity)
+        binding.recyclerview.layoutManager = mLayoutManager
+        val mScrollListener: RecyclerView.OnScrollListener =
+            object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if (!viewModel.isLoading) {
+                        val visibleItemCount: Int = mLayoutManager.childCount
+                        val totalItemCount: Int = mLayoutManager.itemCount
+                        val pastVisibleItems: Int = mLayoutManager.findFirstVisibleItemPosition()
+                        if (pastVisibleItems + visibleItemCount >= totalItemCount) {
+                            viewModel.getNextPage()
+                        }
+                    }
+                }
+            }
+        binding.recyclerview.addOnScrollListener(mScrollListener)
         viewModel.patientsLiveData.observe(
             viewLifecycleOwner,
             {
@@ -86,9 +136,14 @@ class AllPatientsFragment : Fragment() {
     }
 
     private fun updateAdapter() {
-        adapter = WeakReference(AllPatientsAdapter(viewModel.patients))
-        adapter.get()!!.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
-        binding.recyclerview.adapter = adapter.get()
+        if (adapter == null) {
+            adapter = WeakReference(AllPatientsAdapter(viewModel.patients))
+            adapter!!.get()!!.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
+            binding.recyclerview.adapter = adapter!!.get()
+        } else {
+            adapter!!.get()!!.patients = viewModel.patients
+            adapter!!.get()!!.notifyDataSetChanged()
+        }
         Log.i(AllPatientsFragment.tag, "AllPatientsFragment.updateAdapter")
     }
 
@@ -104,5 +159,28 @@ class AllPatientsFragment : Fragment() {
         @JvmStatic
         fun newInstance() =
             AllPatientsFragment()
+    }
+
+    override fun onSearch(query: String?, nationality: String?, gender: Gender) {
+        val queryFields = HashMap<QueryFields, String>()
+        if (query != null && query.isNotEmpty()) {
+            queryFields[QueryFields.FULL_NAME] = query
+        }
+        if (nationality != null && nationality.isNotEmpty() && nationality != "All") {
+            queryFields[QueryFields.NATIONALITY] = nationality
+        }
+        if (gender != Gender.UNKNOWN) {
+            queryFields[QueryFields.GENDER] = gender.toString()
+        }
+        if (queryFields.isNotEmpty()) {
+            viewModel.queryFields = queryFields
+            viewModel.isFromQuery = true
+            viewModel.search()
+        }
+    }
+
+    override fun clear() {
+        viewModel.isFromQuery = false
+        viewModel.clear()
     }
 }

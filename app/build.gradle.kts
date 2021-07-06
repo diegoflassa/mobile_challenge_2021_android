@@ -7,6 +7,7 @@ plugins {
     id("kotlin-parcelize")
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -58,11 +59,11 @@ kapt {
 } 
 dependencies {
     // Kotlin + coroutines
-    implementation("androidx.work:work-runtime-ktx:${Versions.workVersion}")
+    implementation("androidx.work:work-runtime-ktx:${Versions.work}")
     // optional - RxJava2 support
-    implementation("androidx.work:work-rxjava2:${Versions.workVersion}")
+    implementation("androidx.work:work-rxjava2:${Versions.work}")
     // optional - GCMNetworkManager support
-    implementation("androidx.work:work-gcm:${Versions.workVersion}")
+    implementation("androidx.work:work-gcm:${Versions.work}")
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
@@ -80,13 +81,13 @@ dependencies {
 
     //Retrofix 2
     implementation("com.squareup.retrofit2:retrofit:${Versions.retrofit}")
-    implementation("com.squareup.retrofit2:adapter-rxjava3:${Versions.retrofit_adapter}")
-    implementation("com.squareup.retrofit2:converter-moshi:${Versions.converter_moshi}")
-    implementation("com.squareup.retrofit2:converter-gson:${Versions.converter}")
+    implementation("com.squareup.retrofit2:adapter-rxjava3:${Versions.retrofit}")
+    implementation("com.squareup.retrofit2:converter-moshi:${Versions.retrofit}")
+    implementation("com.squareup.retrofit2:converter-gson:${Versions.retrofit}")
 
     // Moshi
-    implementation("com.squareup.moshi:moshi-kotlin:1.12.0")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.12.0")
+    implementation("com.squareup.moshi:moshi-kotlin:${Versions.moshi}")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshi}")
 
     //GSON
     implementation("com.google.code.gson:gson:${Versions.gson}")
@@ -96,17 +97,17 @@ dependencies {
     implementation("io.reactivex.rxjava3:rxandroid:${Versions.rxandroid}")
 
     // Koin main features for Android (Scope,ViewModel ... )
-    implementation("io.insert-koin:koin-core:${Versions.koin}")
+    //implementation("io.insert-koin:koin-core:${Versions.koin}")
     // Koin main features for Android (Scope,ViewModel ...)
-    implementation("io.insert-koin:koin-android:${Versions.koin}")
+    //implementation("io.insert-koin:koin-android:${Versions.koin}")
     // Koin Android - experimental builder extensions
-    implementation("io.insert-koin:koin-android-ext:${Versions.koin}")
+    //implementation("io.insert-koin:koin-android-ext:${Versions.koin_ext}")
     // Koin for Jetpack WorkManager
-    implementation("io.insert-koin:koin-androidx-workmanager:${Versions.koin}")
+    //implementation("io.insert-koin:koin-androidx-workmanager:${Versions.koin}")
 
     // Dagger & Hilt
-    //implementation("com.google.dagger:hilt-android:${Versions.hilt}")
-    //kapt("com.google.dagger:hilt-compiler:${Versions.hilt}")
+    implementation("com.google.dagger:hilt-android:${Versions.hilt}")
+    kapt("com.google.dagger:hilt-android-compiler:${Versions.hilt}")
 
     // Leak Canary
     debugImplementation("com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}")
@@ -148,10 +149,10 @@ dependencies {
     androidTestImplementation("androidx.test:core:${Versions.core}")
     androidTestImplementation("androidx.test.espresso:espresso-core:${Versions.espresso}")
     testImplementation("androidx.test.espresso:espresso-intents:${Versions.espresso}")
-    testImplementation("androidx.test.ext:truth:${Versions.test}")
+    testImplementation("androidx.test.ext:truth:${Versions.core}")
     androidTestImplementation("androidx.test.ext:junit-ktx:${Versions.junit_ktx}")
-    androidTestImplementation("androidx.test:rules:${Versions.test}")
-    androidTestImplementation("androidx.test:runner:${Versions.test}")
+    androidTestImplementation("androidx.test:rules:${Versions.core}")
+    androidTestImplementation("androidx.test:runner:${Versions.core}")
 
     androidTestImplementation("junit:junit:${Versions.junit}")
 }

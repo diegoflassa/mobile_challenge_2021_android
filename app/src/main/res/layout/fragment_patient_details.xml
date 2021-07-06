@@ -6,78 +6,150 @@
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/patientDetails"
+    <RelativeLayout 
+        android:id="@+id/rl_dialog_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.patientDetails.PatientDetailsFragment">
+        android:background="@android:color/transparent">
 
         <ImageView
             android:id="@+id/avatar"
-            android:layout_width="0dp"
+            android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginTop="@dimen/paddingMedium"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="@dimen/padding_medium"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="@dimen/padding_medium"
             android:contentDescription="@string/user_avatar"
             android:cropToPadding="false"
             android:scaleType="fitCenter"
+            android:translationZ="10dp"
             app:layout_constraintDimensionRatio="w,1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed"
-            app:srcCompat="@drawable/ic_launcher_foreground" />
+            app:srcCompat="@drawable/launch_background" />
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/paddingMedium"
-            android:paddingStart="@dimen/paddingMedium"
-            android:paddingEnd="@dimen/paddingMedium"
-            android:text="@tools:sample/full_names"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/avatar" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/patientDetails"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="50dp"
+            android:background="@android:color/white"
+            tools:context=".ui.patientDetails.PatientDetailsFragment">
 
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/paddingMedium"
-            android:layout_marginTop="@dimen/paddingMedium"
-            android:layout_marginEnd="@dimen/paddingMedium"
-            android:paddingStart="@dimen/paddingMedium"
-            android:paddingEnd="@dimen/paddingMedium"
-            android:text="@tools:sample/lorem"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title" />
+            <TextView
+                android:id="@+id/full_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="82dp"
+                android:fontFamily="sans-serif"
+                android:paddingStart="@dimen/padding_medium"
+                android:paddingEnd="@dimen/padding_medium"
+                android:text="@tools:sample/full_names"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/creation_date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/paddingMedium"
-            android:layout_marginEnd="@dimen/paddingMedium"
-            android:paddingStart="@dimen/paddingMedium"
-            android:paddingEnd="@dimen/paddingMedium"
-            android:text="@tools:sample/full_names"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/description" />
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_medium"
+                android:layout_marginTop="@dimen/padding_large"
+                android:paddingStart="@dimen/padding_medium"
+                android:paddingEnd="@dimen/padding_medium"
+                android:text="@tools:sample/full_names"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/full_name" />
 
-        <Button
-            android:id="@+id/open_link"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/paddingMedium"
-            android:layout_marginEnd="@dimen/paddingMedium"
-            android:layout_marginBottom="@dimen/paddingMedium"
-            android:paddingStart="@dimen/paddingMedium"
-            android:paddingEnd="@dimen/paddingMedium"
-            android:text="@string/open_link"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/creation_date" />
+            <TextView
+                android:id="@+id/telephone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_medium"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:paddingStart="@dimen/padding_medium"
+                android:paddingEnd="@dimen/padding_medium"
+                android:text="@tools:sample/full_names"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/email" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/cellphone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_medium"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:paddingStart="@dimen/padding_medium"
+                android:paddingEnd="@dimen/padding_medium"
+                android:text="@tools:sample/full_names"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/telephone" />
+
+            <TextView
+                android:id="@+id/gender"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_medium"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:paddingStart="@dimen/padding_medium"
+                android:paddingEnd="@dimen/padding_medium"
+                android:text="@tools:sample/full_names"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cellphone" />
+
+            <TextView
+                android:id="@+id/nationality"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_medium"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:paddingStart="@dimen/padding_medium"
+                android:paddingEnd="@dimen/padding_medium"
+                android:text="@tools:sample/full_names"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/gender" />
+
+            <TextView
+                android:id="@+id/dob"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_medium"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:paddingStart="@dimen/padding_medium"
+                android:paddingEnd="@dimen/padding_medium"
+                android:text="@tools:sample/full_names"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nationality" />
+
+            <TextView
+                android:id="@+id/address"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_medium"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:paddingStart="@dimen/padding_medium"
+                android:paddingEnd="@dimen/padding_medium"
+                android:text="@tools:sample/full_names"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dob" />
+
+            <ImageButton
+                android:id="@+id/close"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:layout_marginEnd="@dimen/padding_medium"
+                android:backgroundTint="#FFFFFF"
+                android:contentDescription="@string/contentDescriptionCloseImageButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@android:drawable/ic_delete"
+                app:tint="#000000" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 </ScrollView>

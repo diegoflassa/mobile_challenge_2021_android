@@ -23,6 +23,6 @@ data class Address(
     }
 
     fun getFullAddress(): String {
-        return "$street - $city - $state - $postCode"
+        return "${street.name} - ${street.number} - $city - $state - $postCode"
     }
 }

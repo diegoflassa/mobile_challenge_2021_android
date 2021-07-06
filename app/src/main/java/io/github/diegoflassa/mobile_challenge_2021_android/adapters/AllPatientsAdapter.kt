@@ -5,35 +5,85 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.transform.CircleCropTransformation
 import io.github.diegoflassa.mobile_challenge_2021_android.R
 import io.github.diegoflassa.mobile_challenge_2021_android.data.entities.Patient
+import io.github.diegoflassa.mobile_challenge_2021_android.databinding.RecyclerviewItemLoadingBinding
 import io.github.diegoflassa.mobile_challenge_2021_android.databinding.RecyclerviewItemPatientBinding
 import io.github.diegoflassa.mobile_challenge_2021_android.ui.allPatients.AllPatientsFragmentDirections
+import java.text.SimpleDateFormat
 
 open class AllPatientsAdapter(
-    private val patients: List<Patient>,
-) : RecyclerView.Adapter<AllPatientsAdapter.ViewHolder>() {
+    var patients: List<Patient>,
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    companion object {
+        private const val TYPE_PATIENT = 0
+        private const val TYPE_LOADING = 1
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): ViewHolder {
-        val binding = RecyclerviewItemPatientBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-        return ViewHolder(binding.root)
+    ): RecyclerView.ViewHolder {
+        val viewHolder: RecyclerView.ViewHolder
+        when (viewType) {
+            0 -> {
+                val binding = RecyclerviewItemPatientBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+                viewHolder = PatientViewHolder(binding.root)
+            }
+            1 -> {
+                val binding = RecyclerviewItemLoadingBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+                viewHolder = LoadingViewHolder(binding.root)
+            }
+            else -> throw IllegalArgumentException("Invalid view type")
+        }
+
+        return viewHolder
     }
 
     override fun onBindViewHolder(
-        holder: ViewHolder,
+        holder: RecyclerView.ViewHolder,
         position: Int
     ) {
-        holder.bind(patients[position])
+        val element = patients[position]
+        when (holder) {
+            is PatientViewHolder -> holder.bind(element)
+            is LoadingViewHolder -> holder.bind()
+            else -> throw IllegalArgumentException()
+        }
     }
 
-    class ViewHolder(itemView: View) :
+    override fun getItemViewType(position: Int): Int {
+        val patient = patients[position]
+        return when {
+            patient.fullName.first.isEmpty() -> {
+                TYPE_LOADING
+            }
+            patient.fullName.first.isNotEmpty() -> {
+                TYPE_PATIENT
+            }
+            else -> {
+                throw IllegalArgumentException("Invalid type of data $position")
+            }
+        }
+    }
+
+    class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind() {
+        }
+    }
+
+    class PatientViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         private val binding = RecyclerviewItemPatientBinding.bind(itemView)
         fun bind(
@@ -41,14 +91,32 @@ open class AllPatientsAdapter(
         ) {
             val resources = itemView.resources
 
-            if (patient != null) {
+            if (patient != null && !patient.id.value.isNullOrEmpty()) {
                 // Load image
-                binding.title.text = resources.getString(R.string.rv_name, patient.fullName.first)
+                binding.rviAvatar.load(patient.picture.mediumUrl) {
+                    placeholder(R.drawable.image_placeholder)
+                    transformations(CircleCropTransformation())
+                }
+                binding.rviName.text =
+                    resources.getString(R.string.rvi_name, patient.fullName.getFullName())
+                binding.rviGender.text = patient.gender
+                binding.rviCountry.text = patient.nationality
+                val formattedBirthdate: String =
+                    if (patient.dateOfBirth.getDateAsDateTime() != null) {
+                        val simpleDateFormat =
+                            SimpleDateFormat.getDateInstance(SimpleDateFormat.DATE_FIELD)
+                        simpleDateFormat.format(patient.dateOfBirth.getDateAsDateTime()!!)
+                    } else {
+                        resources.getString(R.string.unavailable)
+                    }
+                binding.rviDob.text = formattedBirthdate
             }
             // Click listener
             itemView.setOnClickListener {
                 it.findNavController().navigate(
-                    AllPatientsFragmentDirections.actionNavHomeToPatientDetailsFragment(patient)
+                    AllPatientsFragmentDirections.actionNavHomeToPatientDetailsDialogFragment(
+                        patient
+                    )
                 )
             }
         }

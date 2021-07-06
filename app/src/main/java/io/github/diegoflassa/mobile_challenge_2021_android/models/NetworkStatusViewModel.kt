@@ -13,8 +13,7 @@ sealed class MyState {
     object Error : MyState()
 }
 
-// @HiltViewModel
-class NetworkStatusViewModel/*@Inject*/ @ExperimentalCoroutinesApi constructor(
+class NetworkStatusViewModel @ExperimentalCoroutinesApi constructor(
     // private val handle: SavedStateHandle,
     networkStatusTracker: NetworkStatusTracker,
 ) : ViewModel() {

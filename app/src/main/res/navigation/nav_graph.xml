@@ -12,12 +12,12 @@
         android:label="All Patients"
         tools:layout="@layout/fragment_all_patients" >
         <action
-            android:id="@+id/action_nav_home_to_patientDetailsFragment"
-            app:destination="@id/patientDetailsFragment" />
+            android:id="@+id/action_nav_home_to_patientDetailsDialogFragment"
+            app:destination="@id/patientDetailsDialogFragment" />
     </fragment>
     <fragment
-        android:id="@+id/patientDetailsFragment"
-        android:name="io.github.diegoflassa.mobile_challenge_2021_android.ui.patientDetails.PatientDetailsFragment"
+        android:id="@+id/patientDetailsDialogFragment"
+        android:name="io.github.diegoflassa.mobile_challenge_2021_android.ui.patientDetails.PatientDetailsDialogFragment"
         android:label="Patient Details"
         tools:layout="@layout/fragment_patient_details" >
         <argument
@@ -32,6 +32,6 @@
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
     <action
-        android:id="@+id/action_global_patientDetailsFragment"
-        app:destination="@id/patientDetailsFragment" />
+        android:id="@+id/action_global_patientDetailsDialogFragment"
+        app:destination="@id/patientDetailsDialogFragment" />
 </navigation>

@@ -9,7 +9,7 @@ data class Id(
     @Json(name = NAME)
     var name: String = "",
     @Json(name = VALUE)
-    var value: String = ""
+    var value: String? = null
 ) : Parcelable {
     companion object {
         const val NAME: String = "name"

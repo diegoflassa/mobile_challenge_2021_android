@@ -4,11 +4,13 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.diegoflassa.mobile_challenge_2021_android.data.entities.Patient
+import javax.inject.Inject
 
-// @HiltViewModel
-class PatientDetailsFragmentViewModel /*@Inject*/ constructor(
-    private val handle: SavedStateHandle
+@HiltViewModel
+class PatientDetailsFragmentViewModel @Inject constructor(
+    private val handle: @JvmSuppressWildcards SavedStateHandle
 ) : ViewModel() {
 
     companion object {
