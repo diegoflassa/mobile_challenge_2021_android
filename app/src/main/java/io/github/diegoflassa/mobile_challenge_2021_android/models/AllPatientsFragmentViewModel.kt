@@ -16,6 +16,7 @@ import javax.inject.Inject
 import android.R.bool
 import io.github.diegoflassa.mobile_challenge_2021_android.enums.QueryFields
 import io.github.diegoflassa.mobile_challenge_2021_android.helper.SearchResult
+import java.util.*
 
 
 @DelicateCoroutinesApi

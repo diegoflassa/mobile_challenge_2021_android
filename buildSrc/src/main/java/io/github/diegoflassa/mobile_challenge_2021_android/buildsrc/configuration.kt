@@ -17,7 +17,7 @@ object Config {
     const val compileSdkPreviewVersion = "S"
     const val targetSdkVersion = 30
     const val targetSdkPreviewVersion = "S"
-    const val buildToolsVersion = "31.0.0-rc5"
+    const val buildToolsVersion = "31.0.0"
     const val versionCode = 1//buildVersionCode()
     val versionName = buildVersionName()
 

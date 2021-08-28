@@ -18,7 +18,7 @@ object Versions {
     const val rxandroid = "3.0.0"
     const val koin = "3.1.1"
     const val koin_ext= "3.0.2"
-    const val hilt = "2.37"
+    const val hilt = "2.38"
     const val volley = "1.2.0"
     const val leakcanary = "2.7"
     const val material = "1.4.0-rc01"
